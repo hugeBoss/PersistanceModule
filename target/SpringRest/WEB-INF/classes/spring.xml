@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/booksDB" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+    </bean>
+
+    <bean id="hibernateAnnotatedSessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>by.bsuir.book_shop.persistence.models.BookEntity</value>
+                <value>by.bsuir.book_shop.persistence.models.AuthorEntity</value>
+                <value>by.bsuir.book_shop.persistence.models.LanguageEntity</value>
+                <value>by.bsuir.book_shop.persistence.models.OrderEntity</value>
+                <value>by.bsuir.book_shop.persistence.models.PhoneEntity</value>
+                <value>by.bsuir.book_shop.persistence.models.UserEntity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop> -->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="bookDatabaseDao" class="by.bsuir.book_shop.persistence.impl.BookDatabaseDao"/>
+
+    <bean id="authorDatabaseDao" class="by.bsuir.book_shop.persistence.impl.AuthorDatabaseDao"/>
+
+    <bean id="languageDatabaseDao" class="by.bsuir.book_shop.persistence.impl.LanguageDatabaseDao"/>
+
+    <bean id="orderDatabaseDao" class="by.bsuir.book_shop.persistence.impl.OrderDatabaseDao"/>
+
+    <bean id="phoneDatabaseDao" class="by.bsuir.book_shop.persistence.impl.PhoneDatabaseDao"/>
+
+    <bean id="userDatabaseDao" class="by.bsuir.book_shop.persistence.impl.UserDatabaseDao"/>
+
+    <bean id="bookService" class="by.bsuir.book_shop.rest.services.BookService"/>
+
+    <bean id="bookController" class="by.bsuir.book_shop.rest.controllers.BookController"/>
+
+</beans>
